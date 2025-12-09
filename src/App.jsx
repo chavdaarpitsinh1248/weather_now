@@ -4,6 +4,13 @@ import { useWeather } from "./hooks/useWeather";
 export default function App() {
   const [city, setCity] = useState("");
   const { current, forecast, loading, error, fetchWeather } = useWeather();
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("weather-dark") === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("weather-dark", darkMode);
+  }, [darkMode]);
 
   // Debounce logic
   useEffect(() => {
@@ -15,21 +22,58 @@ export default function App() {
   }, [city]);
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>Weather Now 🌤️</h1>
+    <div 
+      style={{
+        minHeight: "100vh",
+        background: darkMode ? "#0f172a" : "#f8fafc",
+        color: darkMode ? "#f1f5f9" : "#0f172a",
+        padding: "2rem",
+        fontFamily: "sans-serif"
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <h1>Weather Now 🌤️</h1>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            style={{
+              padding: "10px 15px",
+              borderRadius: "8px",
+              border: "none",
+              curesor: "pointer",
+            }}
+          >
+            {darkMode ? "☀️ Light" : "🌙 Dark"}
+          </button>
+        </div>
 
-      <input 
-        type="text"
-        placeholder="Search city..."
-        onChange={(e) => setCity(e.target.value)}
-        style={{ padding: "10px", width: "250px" }}
-      />
+        <input 
+          type="text"
+          placeholder="Search city..."
+          onChange={(e) => setCity(e.target.value)}
+          style={{ 
+            padding: "10px", 
+            width: "250px",
+            marginTop: "10px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            background: darkMode ? "#1e293b" : "#fff",
+            color: darkMode ? "#f1f5f9" : "#0f172a",
+           }}
+        />
+        
 
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
       {current && (
-        <div style={{ marginTop: "20px" }}>
+        <div 
+          style={{ 
+            marginTop: "20px",
+            padding: "20px",
+            borderRadius: "12px",
+            background: darkMode ? "#1e293b" : "#e2e8f0",
+          }}
+        >
           <h2>{current.name}</h2>
           <p>🌡️ Temp: {current.main.temp}°C</p>
           <p>☁️ Weather: {current.weather[0].description}</p>
@@ -45,6 +89,7 @@ export default function App() {
               <div 
                 key={index}
                 style={{
+                  background: darkMode ? "#1e293b" : "#ffffff",
                   border: "1px solid #ddd",
                   padding: "10px",
                   minwidth: "120px",
