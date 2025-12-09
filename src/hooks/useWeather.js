@@ -3,19 +3,9 @@ import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-// helper: pick item in arr whose `hour` is nearest to targetHour
-function pickNearest(arr, targetHour) {
-  if (!arr || arr.length === 0) return null;
-  let best = arr[0];
-  let bestDiff = Math.abs(arr[0].hour - targetHour);
-  for (let i = 1; i < arr.length; i++) {
-    const diff = Math.abs(arr[i].hour - targetHour);
-    if (diff < bestDiff) {
-      best = arr[i];
-      bestDiff = diff;
-    }
-  }
-  return best;
+function pickExactHour(arr, targetHour) {
+    if (!arr || arr.light === 0) return null;
+    return arr.find((entry) => entry.hour === targetHour) || null;
 }
 
 export function useWeather() {
@@ -73,9 +63,9 @@ export function useWeather() {
 
       const result = orderedDates.map((dateStr) => {
         const entries = daysMap[dateStr];
-        // pick morning (~6) and night (~22). You can tweak target hours.
-        const morning = pickNearest(entries, 6);
-        const night = pickNearest(entries, 22);
+        // pick morning (~6) and night (~21). You can tweak target hours.
+        const morning = pickExactHour(entries, 6);
+        const night = pickExactHour(entries, 21);
 
         // Helper to convert chosen entry into a simpler object for the UI
         const toSimple = (chosen) => {
