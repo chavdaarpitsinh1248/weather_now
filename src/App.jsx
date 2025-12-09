@@ -28,11 +28,11 @@ export default function App() {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
-      {data && (
+      {current && (
         <div style={{ marginTop: "20px" }}>
-          <h2>{data.name}</h2>
-          <p>🌡️ Temp: {data.main.temp}°C</p>
-          <p>☁️ Weather: {data.weather[0].description}</p>
+          <h2>{current.name}</h2>
+          <p>🌡️ Temp: {current.main.temp}°C</p>
+          <p>☁️ Weather: {current.weather[0].description}</p>
         </div>          
       )}
 
