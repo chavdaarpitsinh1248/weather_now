@@ -3,9 +3,17 @@ import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-function pickExactHour(arr, targetHour) {
-    if (!arr || arr.light === 0) return null;
-    return arr.find((entry) => entry.hour === targetHour) || null;
+function pickByWindow(arr, startHour, endHour) {
+    if (!arr || arr.length === 0) return null;
+
+    const windowItems = arr.filter(
+        (e) => e.hour >= startHour && e.hour <= endHour
+    );
+
+    if (windowItems.length === 0) return null;
+
+    // pick the middle value of the window
+    return windowItems[Math.floor(windowItems.length / 2)];
 }
 
 export function useWeather() {
@@ -64,8 +72,8 @@ export function useWeather() {
       const result = orderedDates.map((dateStr) => {
         const entries = daysMap[dateStr];
         // pick morning (~6) and night (~21). You can tweak target hours.
-        const morning = pickExactHour(entries, 6);
-        const night = pickExactHour(entries, 21);
+        const morning = pickByWindow(entries, 5, 9);
+        const night = pickByWindow(entries, 18, 23);
 
         // Helper to convert chosen entry into a simpler object for the UI
         const toSimple = (chosen) => {
