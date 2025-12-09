@@ -1,18 +1,83 @@
-# React + Vite
+Live link :
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🌤️ Weather Now — React Weather App
 
-Currently, two official plugins are available:
+A modern weather forecasting app built with React that shows real-time weather data and a smart multi-day forecast, similar to Google Weather.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Features
 
-## React Compiler
+🔍 Search weather by city name
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+🌡️ Real-time temperature and weather conditions
 
-Note: This will impact Vite dev & build performances.
+🧠 Smart forecast system (morning & night data per day)
 
-## Expanding the ESLint configuration
+🌙 Dark mode with persistent state (LocalStorage)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+⚡ Debounced API search for performance
+
+🧩 Custom React hooks for reusable logic
+
+📱 Responsive, clean UI
+
+🛠️ Tech Stack
+
+React (Vite)
+
+JavaScript (ES6+)
+
+OpenWeatherMap API
+
+CSS (Custom styling)
+
+Axios
+
+🔑 API Setup
+
+This app uses the OpenWeatherMap API.
+
+Create a free account at:
+https://openweathermap.org/api
+
+Get your API Key.
+
+Create a .env file in the project root:
+
+VITE_WEATHER_API_KEY=your_api_key_here
+
+📦 Installation & Run Locally
+git clone https://github.com/your-username/weather-now.git
+cd weather-now
+npm install
+npm run dev
+
+Open your browser and visit:
+
+http://localhost:5173
+
+📁 Project Structure
+src/
+├── hooks/
+│ └── useWeather.js
+├── App.jsx
+├── index.css
+└── main.jsx
+
+✅ What You Learn From This Project
+
+API integration with Axios
+
+Debounce techniques in React
+
+Custom Hook architecture
+
+Timezone handling in JavaScript
+
+UI state management
+
+Persistent theme with LocalStorage
+
+🧑‍💻 Author
+
+Built by Your Name
+Learning-focused React project 🚀
