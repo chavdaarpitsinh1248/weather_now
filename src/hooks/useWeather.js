@@ -4,7 +4,8 @@ import axios from "axios";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 export function useWeather() {
-    const [data, setData] = useState(null);
+    const [current, setCurrent] = useState(null);
+    const [forecast, setForecast] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -15,11 +16,20 @@ export function useWeather() {
             setLoading(true);
             setError("");
 
-            const res = await axios.get(
+            // Current weather
+            const currentRes = await axios.get(
                 `https:api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
             );
 
-            setData(res.data);
+            const { lat, lon } = currentRes.data.coord;
+            setCurrent(currentRes.data);
+
+            // 7 days forecast
+            const forecastRes = await axios.get(
+                `https:api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+            );
+
+            setForecast(forecastRes.data.list);
         } catch (err) {
             setError("City not found");
         } finally {
@@ -27,5 +37,5 @@ export function useWeather() {
         }
     };
 
-    return { data, loading, error, fetchWeather };
+    return { current, forecast, loading, error, fetchWeather };
 }

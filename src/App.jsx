@@ -3,7 +3,7 @@ import { useWeather } from "./hooks/useWeather";
 
 export default function App() {
   const [city, setCity] = useState("");
-  const { data, loading, error, fetchWeather } = useWeather();
+  const { current, forecast, loading, error, fetchWeather } = useWeather();
 
   // Debounce logic
   useEffect(() => {
@@ -34,6 +34,30 @@ export default function App() {
           <p>🌡️ Temp: {data.main.temp}°C</p>
           <p>☁️ Weather: {data.weather[0].description}</p>
         </div>          
+      )}
+
+      {forecast.length > 0 && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>5-Day Forecast</h3>
+
+          <div style={{ display: "flex", gap: "10px", overflowx: "auto" }} >
+            {forecast.slice(0, 7).map((item, index) => (
+              <div 
+                key={index}
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "10px",
+                  minwidth: "120px",
+                  borderRadius: "8px",
+                }}
+              >
+                <p>{new Date(item.dt_txt).toDateString()}</p>
+                <p>🌡️ {item.main.temp}°C</p>
+                <p>{item.weather[0].main}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
