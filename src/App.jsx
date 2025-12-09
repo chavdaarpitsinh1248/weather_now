@@ -4,7 +4,7 @@ import "./index.css";
 
 export default function App() {
   const [city, setCity] = useState("");
-  const { current, forecast, loading, error, fetchWeather } = useWeather();
+  const { current, forecastByDay, loading, error, fetchWeather } = useWeather();
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("weather-dark") === "true";
   });
@@ -13,9 +13,10 @@ export default function App() {
     localStorage.setItem("weather-dark", darkMode);
   }, [darkMode]);
 
+  // debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchWeather(city);
+      if (city.trim()) fetchWeather(city.trim());
     }, 500);
     return () => clearTimeout(timer);
   }, [city]);
@@ -26,7 +27,7 @@ export default function App() {
         <h1>Weather Now 🌤️</h1>
         <button
           className="toggle-btn"
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={() => setDarkMode((s) => !s)}
         >
           {darkMode ? "☀️ Light" : "🌙 Dark"}
         </button>
@@ -41,26 +42,54 @@ export default function App() {
         />
       </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {loading && <p style={{ marginTop: 12 }}>Loading...</p>}
+      {error && <p style={{ marginTop: 12 }}>{error}</p>}
 
       {current && (
         <div className="card">
-          <h2>{current.name}</h2>
-          <p>🌡️ {current.main.temp}°C</p>
+          <h2>{current.name}, {current.sys?.country}</h2>
+          <p>🌡️ {Math.round(current.main.temp)}°C</p>
           <p>☁️ {current.weather[0].description}</p>
         </div>
       )}
 
-      {forecast.length > 0 && (
+      {forecastByDay.length > 0 && (
         <div className="forecast">
-          <h3>5-Day Forecast</h3>
+          <h3>Forecast (morning & night)</h3>
           <div className="forecast-list">
-            {forecast.slice(0, 7).map((item, index) => (
-              <div key={index} className="forecast-card">
-                <p>{new Date(item.dt_txt).toDateString()}</p>
-                <p>🌡️ {item.main.temp}°C</p>
-                <p>{item.weather[0].main}</p>
+            {forecastByDay.map((day) => (
+              <div key={day.date} className="forecast-card">
+                <strong>{new Date(day.date).toDateString()}</strong>
+
+                <div style={{ marginTop: 8 }}>
+                  <div>
+                    <em>Morning</em>
+                    {day.morning ? (
+                      <div>
+                        <p style={{ margin: 4 }}>Time: {day.morning.timeText}</p>
+                        <p style={{ margin: 4 }}>Temp: {Math.round(day.morning.temp)}°C</p>
+                        <p style={{ margin: 4 }}>{day.morning.description}</p>
+                      </div>
+                    ) : (
+                      <p style={{ margin: 4 }}>— no morning reading</p>
+                    )}
+                  </div>
+
+                  <hr style={{ margin: "8px 0" }} />
+
+                  <div>
+                    <em>Night</em>
+                    {day.night ? (
+                      <div>
+                        <p style={{ margin: 4 }}>Time: {day.night.timeText}</p>
+                        <p style={{ margin: 4 }}>Temp: {Math.round(day.night.temp)}°C</p>
+                        <p style={{ margin: 4 }}>{day.night.description}</p>
+                      </div>
+                    ) : (
+                      <p style={{ margin: 4 }}>— no night reading</p>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
