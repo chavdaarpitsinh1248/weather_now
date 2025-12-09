@@ -1,4 +1,4 @@
-Live link :
+Live link : https://chavarpitweatherapp.netlify.app/
 
 🌤️ Weather Now — React Weather App
 
